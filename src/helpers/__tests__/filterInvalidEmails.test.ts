@@ -4,7 +4,7 @@ describe('filterInvalidEmails', () => {
   it('should return an empty array when all domains match', () => {
     const emailDomains = '@gmail.com';
     const commitEmails = [
-      'a@gmail.com',
+      'ab@gmail.com',
       'a.b@gmail.com',
       'a+b@gmail.com',
       'd_f@gmail.com',

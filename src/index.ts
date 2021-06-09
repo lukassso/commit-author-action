@@ -4,19 +4,10 @@ import { INPUT, OUTPUT } from 'constants/io';
 import { GITHUB_EVENT } from 'constants/env';
 import { FALSE } from 'constants/boolean';
 import getCommitEmails from 'helpers/getCommitEmails';
-import formatEmailDomain from 'helpers/formatEmailDomain';
 import filterInvalidEmails from 'helpers/filterInvalidEmails';
 
 async function checkEmail(): Promise<void> {
-  const emailDomainsBox: [] = [];
-  const emailDomainsMain = INPUT.EMAIL_DOMAIN;
-  emailDomainsMain.split(',').forEach((email) => {
-    const pushedEmail: string = getInput(email, { required: true });
-    emailDomainsBox.push(pushedEmail);
-  });
-  const emailDomains = emailDomainsBox.forEach((email) => {
-    formatEmailDomain(email);
-  });
+  const emailDomains = getInput(INPUT.EMAIL_DOMAIN, { required: true });
   info(`Email domains: ${emailDomains}`);
 
   const commitEmails = await getCommitEmails(GITHUB_EVENT);
@@ -31,7 +22,7 @@ async function checkEmail(): Promise<void> {
   handleSetOutput(invalidEmails, emailDomains);
 }
 
-function handleSetOutput(invalidEmails: string[], emailDomains: string[]): void {
+function handleSetOutput(invalidEmails: string[], emailDomains: string): void {
   const isValid = invalidEmails.length === 0;
 
   setOutput(OUTPUT.IS_VALID, isValid);
